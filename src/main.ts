@@ -34,7 +34,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('Auth', 'Authentication endpoints')
     .addTag('Logs', 'Activity logging endpoints')
-    .addTag('Usage', 'Usage analytics endpoints')
+    .addTag('Usages', 'Usage analytics endpoints')
     .addBearerAuth(
       {
         type: 'http',
