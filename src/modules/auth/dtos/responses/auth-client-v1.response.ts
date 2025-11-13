@@ -1,5 +1,5 @@
-import { MaskUtil } from 'src/shared/utils/mask.util';
 import { Client } from '../../../../infrastructures/database/entities/client.entity';
+import { MaskUtil } from '../../../../shared/utils/mask.util';
 
 export class AuthClientV1Response {
   id: string;
