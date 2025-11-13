@@ -1,8 +1,57 @@
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
 import { AppModule } from './app.module';
+import { config } from './config';
+import { JwtAuthTypeEnum } from './infrastructures/modules/jwt/enums/jwt-type.enum';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  const logger = new Logger('Bootstrap');
+
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Enable CORS
+  app.enableCors();
+
+  // Set global prefix
+  app.setGlobalPrefix('api');
+
+  // Enable Versioning
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
+
+  // Swagger setup
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('User Activity Tracking API')
+    .setDescription(
+      'API documentation for User Activity Tracking System with advanced caching and high-traffic handling',
+    )
+    .setVersion('1.0')
+    .addTag('Auth', 'Authentication endpoints')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT access token',
+        in: 'header',
+      },
+      JwtAuthTypeEnum.AccessToken,
+    )
+    .build();
+
+  const openApiDoc = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc));
+
+  await app.listen(config.app.port);
+
+  logger.log(`Application is running on: http://localhost:${config.app.port}`);
+  logger.log(`Swagger documentation: http://localhost:${config.app.port}/api`);
 }
-bootstrap();
+
+void bootstrap();
