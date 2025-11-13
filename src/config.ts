@@ -24,9 +24,31 @@ export const config = {
     expiresInSeconds: +(process.env.JWT_EXPIRES_IN_SECONDS ?? 86400), // 1 day
   },
 
+  encryption: {
+    secret: process.env.ENCRYPTION_SECRET ?? process.env.JWT_SECRET ?? '',
+  },
+
   redis: {
     host: process.env.REDIS_HOST ?? '',
     port: +(process.env.REDIS_PORT ?? 6379),
     password: process.env.REDIS_PASSWORD ?? '',
+    maxRetries: +(process.env.REDIS_MAX_RETRIES ?? 3),
+    retryDelay: +(process.env.REDIS_RETRY_DELAY ?? 50),
+    maxRetryDelay: +(process.env.REDIS_MAX_RETRY_DELAY ?? 2000),
+  },
+
+  cache: {
+    ttlUsage: +(process.env.CACHE_TTL_USAGE ?? 3600), // 1 hour
+    localMaxSizeEntries: +(process.env.LOCAL_CACHE_MAX_SIZE_ENTRIES ?? 500),
+  },
+
+  rateLimit: {
+    default: +(process.env.RATE_LIMIT_DEFAULT ?? 1000),
+    windowSeconds: +(process.env.RATE_LIMIT_WINDOW_SECONDS ?? 3600), // 1 hour
+  },
+
+  queue: {
+    logBatchSize: +(process.env.QUEUE_LOG_BATCH_SIZE ?? 100),
+    logFlushIntervalMs: +(process.env.QUEUE_LOG_FLUSH_INTERVAL_MS ?? 5000),
   },
 } as const;

@@ -14,7 +14,7 @@ export class AuthRegisterV1Service {
   /**
    * Registers a new client
    */
-  async register(request: AuthRegisterV1Request): Promise<void> {
+  async register(request: AuthRegisterV1Request): Promise<{ apiKey: string }> {
     // Check if email already exists
     const existingClient = await this.clientV1Repository.findOneByEmail(
       request.email,
@@ -27,15 +27,18 @@ export class AuthRegisterV1Service {
     }
 
     // Generate API key
-    const apiKey = this.authService.generateApiKey();
+    const plainApiKey = this.authService.generateApiKey();
 
-    // Create new client (password will be hashed by entity hook)
+    // Create new client
     const client = this.clientV1Repository.create({
       ...request,
-      apiKey,
+      apiKey: plainApiKey,
     });
 
     // Save client to database
     await this.clientV1Repository.save(client);
+
+    // Return the plain API key
+    return { apiKey: plainApiKey };
   }
 }

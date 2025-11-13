@@ -1,10 +1,10 @@
+import { MaskUtil } from 'src/shared/utils/mask.util';
 import { Client } from '../../../../infrastructures/database/entities/client.entity';
 
 export class AuthClientV1Response {
   id: string;
   name: string;
   email: string;
-  apiKey: string;
   createdAt: Date;
   updatedAt: Date;
 
@@ -12,8 +12,7 @@ export class AuthClientV1Response {
     return {
       id: entity.id,
       name: entity.name,
-      email: entity.email,
-      apiKey: entity.apiKey,
+      email: MaskUtil.email(entity.email),
       createdAt: entity.createdAt!,
       updatedAt: entity.updatedAt!,
     };

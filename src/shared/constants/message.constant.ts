@@ -18,6 +18,7 @@ export const ErrorMessageConstant = {
   InternalServerError: 'Internal Server Error',
   BadRequest: 'Bad Request',
   Conflict: 'Conflict',
+  TooManyRequests: 'Too Many Requests',
   ValidationError: 'Validation Error',
   FieldRequired: 'Field Required',
   FieldRequiredWithName: (fieldName: string) =>
@@ -57,7 +58,6 @@ export const ErrorMessageConstant = {
   }) =>
     `Data ${params.entityName} ${params.identifier} does not have the required ${params.requiredAttribute} for ${params.context}`,
 
-
   /**
    * Error messages related to auth operations
    */
@@ -67,7 +67,7 @@ export const ErrorMessageConstant = {
    * Error messages related to user passwords
    */
   PasswordTooWeak:
-    'Password too weak, must contain at least 1 number and 1 alphabet',
+    'Password too weak, must contain at least one uppercase letter, one lowercase letter, and one number',
   PasswordTooShort: (length = 8) =>
     `Password must be at least ${length} characters long`,
 

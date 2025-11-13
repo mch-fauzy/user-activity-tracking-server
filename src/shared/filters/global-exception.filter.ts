@@ -18,6 +18,7 @@ import { ZodValidationException } from 'nestjs-zod';
 import { config } from 'src/config';
 import { EntityNotFoundError, QueryFailedError } from 'typeorm';
 import { ErrorMessageConstant } from '../constants/message.constant';
+import { TooManyRequestsException } from '../exceptions/too-many-requests.exception';
 import { IErrorResponseWithStatus } from '../interfaces/basic-response.interface';
 import { ZodUtils } from '../utils/zod.util';
 
@@ -119,6 +120,13 @@ export class GlobalExceptionHandlerFilter implements ExceptionFilter {
         ConflictException.name,
         (): IErrorResponseWithStatus => ({
           message: ErrorMessageConstant.Conflict,
+          error: exception.message,
+        }),
+      ],
+      [
+        TooManyRequestsException.name,
+        (): IErrorResponseWithStatus => ({
+          message: ErrorMessageConstant.TooManyRequests,
           error: exception.message,
         }),
       ],

@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { cleanupOpenApiDoc } from 'nestjs-zod';
 import { AppModule } from './app.module';
 import { config } from './config';
+import { ApiKeyAuthTypeEnum } from './infrastructures/modules/api-key/enums/api-key-type.enum';
 import { JwtAuthTypeEnum } from './infrastructures/modules/jwt/enums/jwt-type.enum';
 
 async function bootstrap() {
@@ -32,6 +33,8 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('Auth', 'Authentication endpoints')
+    .addTag('Logs', 'Activity logging endpoints')
+    .addTag('Usage', 'Usage analytics endpoints')
     .addBearerAuth(
       {
         type: 'http',
@@ -43,6 +46,14 @@ async function bootstrap() {
       },
       JwtAuthTypeEnum.AccessToken,
     )
+    .addSecurity(ApiKeyAuthTypeEnum.ApiKey, {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'API Key',
+      name: 'API Key',
+      description: 'Enter your API key (received during registration)',
+      in: 'header',
+    })
     .build();
 
   const openApiDoc = SwaggerModule.createDocument(app, swaggerConfig);

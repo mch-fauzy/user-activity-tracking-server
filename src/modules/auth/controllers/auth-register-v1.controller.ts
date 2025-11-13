@@ -35,12 +35,12 @@ export class AuthRegisterV1Controller {
   })
   async register(
     @Body() request: AuthRegisterV1Request,
-  ): Promise<IBasicResponse<null>> {
-    await this.authRegisterService.register(request);
+  ): Promise<IBasicResponse<{ apiKey: string }>> {
+    const result = await this.authRegisterService.register(request);
 
     return {
       message: SuccessMessageConstant.EntityCreated('Client'),
-      data: null,
+      data: result,
     };
   }
 }
