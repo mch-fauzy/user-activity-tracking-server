@@ -15,6 +15,14 @@ export const databaseConfig: DataSourceOptions = {
   migrations: [`${__dirname}/migrations/*.ts`],
   namingStrategy: new SnakeNamingStrategy(),
   poolSize: config.db.poolSize,
+  ssl: config.db.ssl
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
+    extra: {
+    options: `-c timezone=${config.app.tz}`,
+  },
 };
 
 const dataSource = new DataSource(databaseConfig);

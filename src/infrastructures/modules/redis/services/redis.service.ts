@@ -15,6 +15,11 @@ export class RedisService implements OnModuleDestroy {
       host: config.redis.host,
       port: config.redis.port,
       password: config.redis.password || undefined,
+      tls: config.redis.tls
+        ? {
+            rejectUnauthorized: false,
+          }
+        : undefined,
       retryStrategy: (times: number) => {
         if (times > config.redis.maxRetries) {
           this.logger.error(

@@ -17,6 +17,7 @@ export const config = {
     username: process.env.DB_USERNAME ?? 'postgres',
     password: process.env.DB_PASSWORD ?? 'postgres',
     poolSize: +(process.env.DB_POOL_SIZE ?? 10),
+    ssl: process.env.DB_SSL === 'true',
   },
 
   jwt: {
@@ -32,6 +33,7 @@ export const config = {
     host: process.env.REDIS_HOST ?? '',
     port: +(process.env.REDIS_PORT ?? 6379),
     password: process.env.REDIS_PASSWORD ?? '',
+    tls: process.env.REDIS_TLS === 'true',
     maxRetries: +(process.env.REDIS_MAX_RETRIES ?? 3),
     retryDelay: +(process.env.REDIS_RETRY_DELAY ?? 50),
     maxRetryDelay: +(process.env.REDIS_MAX_RETRY_DELAY ?? 2000),
