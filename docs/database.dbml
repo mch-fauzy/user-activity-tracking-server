@@ -1,0 +1,49 @@
+Table "migrations" {
+  "id" int4 [pk, not null, increment]
+  "timestamp" int8 [not null]
+  "name" varchar [not null]
+}
+
+Table "clients" {
+  "id" uuid [pk, not null, default: `uuid_generate_v4()`]
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null, default: `now()`]
+  "deleted_at" timestamp
+  "created_by" uuid
+  "updated_by" uuid
+  "deleted_by" uuid
+  "name" varchar [not null]
+  "email" varchar [not null]
+  "api_key" varchar [not null]
+  "password" varchar [not null]
+
+  Indexes {
+    api_key [type: btree, name: "IDX_740fe6d4fd0cd0ff47d766c8e0"]
+    email [type: btree, name: "IDX_b48860677afe62cd96e1265948"]
+  }
+}
+
+Table "logs" {
+  "id" uuid [pk, not null, default: `uuid_generate_v4()`]
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null, default: `now()`]
+  "deleted_at" timestamp
+  "created_by" uuid
+  "updated_by" uuid
+  "deleted_by" uuid
+  "client_id" uuid [not null]
+  "api_key" varchar [not null]
+  "ip_address" varchar [not null]
+  "endpoint" varchar [not null]
+  "method" varchar [not null]
+  "timestamp" int8 [not null]
+
+  Indexes {
+    api_key [type: btree, name: "IDX_106185d572e56677adcfb55d36"]
+    client_id [type: btree, name: "IDX_1aa17ee81ccc60e7bff31f1732"]
+    (api_key, created_at) [type: btree, name: "IDX_576230dd0af7eb2dcf9a88f9ab"]
+    (client_id, created_at) [type: btree, name: "IDX_7056f5a1dd6067eaae0b09ed9a"]
+  }
+}
+
+Ref "FK_1aa17ee81ccc60e7bff31f17329":"clients"."id" < "logs"."client_id"
