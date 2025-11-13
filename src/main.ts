@@ -57,7 +57,21 @@ async function bootstrap() {
     .build();
 
   const openApiDoc = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc));
+  SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc), {
+    customSiteTitle: 'User Activity Tracking API',
+    customCss: '.swagger-ui .topbar { display: none }',
+    customfavIcon: 'https://nestjs.com/img/logo-small.svg',
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customCssUrl: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css',
+    ],
+    customJs: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.js',
+    ],
+  });
 
   await app.listen(config.app.port);
 

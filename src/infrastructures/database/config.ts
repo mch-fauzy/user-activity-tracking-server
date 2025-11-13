@@ -20,7 +20,7 @@ export const databaseConfig: DataSourceOptions = {
         rejectUnauthorized: false,
       }
     : false,
-    extra: {
+  extra: {
     options: `-c timezone=${config.app.tz}`,
   },
 };
