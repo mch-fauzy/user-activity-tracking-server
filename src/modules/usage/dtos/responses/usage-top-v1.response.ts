@@ -1,4 +1,4 @@
-import { MaskUtil } from '../../../../../src/shared/utils/mask.util';
+import { MaskUtil } from '../../../../shared/utils/mask.util';
 import { ITopClientData } from '../../../log/repositories/log-v1.repository';
 
 export class UsageTopV1Response {

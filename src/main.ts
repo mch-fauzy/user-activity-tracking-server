@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { cleanupOpenApiDoc } from 'nestjs-zod';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './config';
 import { ApiKeyAuthTypeEnum } from './infrastructures/modules/api-key/enums/api-key-type.enum';
@@ -12,6 +13,9 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Security headers
+  app.use(helmet());
 
   // Enable CORS
   app.enableCors();
