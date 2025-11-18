@@ -2,6 +2,7 @@ import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 import { cleanupOpenApiDoc } from 'nestjs-zod';
 import { AppModule } from './app.module';
 import { config } from './config';
@@ -13,8 +14,28 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // Security headers
-  // app.use(helmet());
+  // Security headers with Swagger-compatible CSP
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://cdnjs.cloudflare.com',
+          ],
+          scriptSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            'https://cdnjs.cloudflare.com',
+          ],
+          imgSrc: ["'self'", 'data:', 'https://nestjs.com'],
+          fontSrc: ["'self'", 'https://cdnjs.cloudflare.com'],
+        },
+      },
+    }),
+  );
 
   // Enable CORS
   app.enableCors();
